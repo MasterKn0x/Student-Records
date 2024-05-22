@@ -1,0 +1,51 @@
+[
+    {
+        "sid": 1,
+        "name": "sss",
+        "age": 20,
+        "address": "wdcopek",
+        "cgpa": 3.8
+    },
+    {
+        "sid": 2,
+        "name": "cednonc",
+        "age": 21,
+        "address": "absgjh",
+        "cgpa": 3.5
+    },
+    {
+        "sid": 3,
+        "name": "ss",
+        "age": "10",
+        "address": "sss",
+        "cgpa": "0.05"
+    },
+    {
+        "sid": 4,
+        "name": "ss",
+        "age": "9",
+        "address": "sss",
+        "cgpa": "0.08"
+    },
+    {
+        "sid": 5,
+        "name": "isuru",
+        "age": "23",
+        "address": "kandy",
+        "cgpa": "4"
+    },
+    {
+        "sid": 6,
+        "name": "senith",
+        "age": "23",
+        "address": "kandy",
+        "cgpa": "2"
+    },
+    {
+        "sid": 7,
+        "name": "bob",
+        "age": "23",
+        "address": "kandy",
+        "cgpa": "2"
+    }
+]

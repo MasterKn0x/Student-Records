@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Records</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #212121;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        button {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #555;
+            border-radius: 3px;
+            font-size: 16px;
+            background-color: #444;
+            color: #fff;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #searchInput {
+            margin-right: 10px;
+        }
+
+        .student-info {
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #666;
+        }
+
+        .student-info p {
+            margin: 5px 0;
+        }
+
+        hr {
+            margin: 10px 0;
+            border: none;
+            border-top: 1px solid #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Records</h1>
+
+        <!-- Search form -->
+        <form>
+            <input type="text" id="searchInput" placeholder="Search by student ID...">
+            <button type="button" onclick="searchStudents()">Search</button>
+        </form>
+
+        <!-- Form to add new student -->
+        <h2>Add New Student</h2>
+        <form id="addStudentForm">
+            <input type="text" id="nameInput" placeholder="Name" required><br>
+            <input type="number" id="ageInput" placeholder="Age" required><br>
+            <input type="text" id="addressInput" placeholder="Address" required><br>
+            <input type="number" id="cgpaInput" placeholder="CGPA" step="0.01" required><br>
+            <button type="button" onclick="addStudent()">Add Student</button>
+        </form>
+
+        <!-- Button to fetch all students -->
+        <button onclick="fetchAllStudents()">Fetch All Students</button>
+
+        <!-- Container for displaying student records -->
+        <div id="studentData"></div>
+    </div>
+
+    <!-- JavaScript code -->
+    <script>
+        // Function to search students by student ID (sid)
+        function searchStudents() {
+            // Get the search query entered by the user
+            var searchValue = document.getElementById('searchInput').value.trim();
+            // Fetch student records by ID using AJAX
+            fetch('get_students.php?sid=' + searchValue)
+            .then(response => response.json())
+            .then(data => {
+                displayStudents([data]);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Function to display student records
+        function displayStudents(students) {
+            var studentData = document.getElementById('studentData');
+            studentData.innerHTML = ''; // Clear previous data
+
+            students.forEach(function (student) {
+                var studentInfo = document.createElement('div');
+                studentInfo.classList.add('student-info');
+                studentInfo.innerHTML = `
+                    <p><strong>Name:</strong> ${student.name}</p>
+                    <p><strong>Age:</strong> ${student.age}</p>
+                    <p><strong>Address:</strong> ${student.address}</p>
+                    <p><strong>CGPA:</strong> ${student.cgpa}</p>
+                `;
+                studentData.appendChild(studentInfo);
+            });
+        }
+
+        // Function to add a new student
+        function addStudent() {
+            // Get input values for the new student
+            var name = document.getElementById('nameInput').value.trim();
+            var age = parseInt(document.getElementById('ageInput').value.trim());
+            var address = document.getElementById('addressInput').value.trim();
+            var cgpa = parseFloat(document.getElementById('cgpaInput').value.trim());
+
+            // Create a new FormData object to send data via POST request
+            var formData = new FormData();
+            formData.append('name', name);
+            formData.append('age', age);
+            formData.append('address', address);
+            formData.append('cgpa', cgpa);
+
+            // Send a POST request to add_student.php to add the new student
+            fetch('add_student.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the newly added student
+                displayStudents([data]);
+                // Show a success message
+                alert('New student added successfully!');
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Function to fetch all student records
+        function fetchAllStudents() {
+            // Fetch all student records using AJAX
+            fetch('get_students.php')
+            .then(response => response.json())
+            .then(data => {
+                displayStudents(data);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
+
+
